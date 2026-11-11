@@ -1,10 +1,9 @@
-const CACHE_NAME = 'vitanex-pwa-v6';
+const CACHE_NAME = 'vitanex-pwa-v7';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './assets/icon-192.png',
-  './assets/icon-512.png'
+  './assets/icon-192.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -32,21 +31,36 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const url = new URL(event.request.url);
+
+  // Never intercept video streams or Range requests (prevents 5-second mobile video buffering lock)
+  if (
+    event.request.headers.get('range') ||
+    event.request.destination === 'video' ||
+    /\.(mp4|mov|webm)(\?|$)/i.test(url.pathname)
+  ) {
+    return;
+  }
+
+  // Instant Stale-While-Revalidate: return cached app shell immediately, update cache in background
   event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        if (
-          networkResponse &&
-          networkResponse.status === 200 &&
-          networkResponse.type === 'basic'
-        ) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      })
-      .catch(() => caches.match(event.request))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.match(event.request).then((cachedResponse) => {
+        const networkFetch = fetch(event.request)
+          .then((networkResponse) => {
+            if (
+              networkResponse &&
+              networkResponse.status === 200 &&
+              networkResponse.type === 'basic'
+            ) {
+              cache.put(event.request, networkResponse.clone());
+            }
+            return networkResponse;
+          })
+          .catch(() => cachedResponse);
+
+        return cachedResponse || networkFetch;
+      });
+    })
   );
 });

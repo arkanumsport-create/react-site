@@ -113,7 +113,7 @@ export function MatrixIntroOverlay({ onComplete, t, lang, setLang }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
-    }, 3200);
+    }, 2200);
     return () => clearTimeout(timer);
   }, [onComplete]);
 

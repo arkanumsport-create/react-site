@@ -291,18 +291,21 @@ export function App() {
 
                   {/* Hero Video replacing the static photo on the Home page */}
                   <div className="hero-workspace-card">
-                    <video
-                      src="./assets/vitanex-hero.mp4"
-                      controls
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="hero-workspace-video"
-                    >
-                      <source src="./assets/vitanex-hero.mp4" type="video/mp4" />
-                      <source src="./assets/vitanex-hero.mp4" type="video/quicktime" />
-                    </video>
+                    {!showIntro && (
+                      <video
+                        src="./assets/vitanex-hero.mp4"
+                        controls
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        className="hero-workspace-video"
+                      >
+                        <source src="./assets/vitanex-hero.mp4" type="video/mp4" />
+                        <source src="./assets/vitanex-hero.mp4" type="video/quicktime" />
+                      </video>
+                    )}
                   </div>
                 </div>
 
@@ -467,15 +470,17 @@ export function App() {
                     <h2 className="section-heading">{t.sections.aboutTitle}</h2>
                     <p className="section-sub">{t.sections.aboutSubtitle}</p>
                     <div className="company-video-wrapper">
-                      <video
-                        src="./assets/vitanex-company.mp4"
-                        controls
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="company-showcase-video"
-                      />
+                      {!showIntro && (
+                        <video
+                          src="./assets/vitanex-company.mp4"
+                          controls
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          className="company-showcase-video"
+                        />
+                      )}
                     </div>
                   </div>
 
