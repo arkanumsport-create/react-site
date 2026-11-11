@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   TRANSLATIONS,
   WHATSAPP_NUMBERS,
+  INSTAGRAM_INFO,
   SERVICES_DATA,
   PORTFOLIO_CASES,
   EXPERTISE_INDUSTRIES,
@@ -12,6 +13,7 @@ import {
 import { MatrixCanvas, MatrixIntroOverlay } from './components/MatrixRain';
 import { HeaderSidebar } from './components/HeaderSidebar';
 import { LeadForm, SuccessPopup } from './components/LeadFormSection';
+import { VitaNexLogo, WhatsAppIcon, InstagramIcon } from './components/BrandIcons';
 import './App.css';
 
 export function App() {
@@ -29,25 +31,43 @@ export function App() {
 
   const t = TRANSLATIONS[lang] || TRANSLATIONS.ru;
 
-  // Theme mode: 'contrast' combines Dark Cyber Hero + Clean White/Dark alternating sections; 'dark' is full Cyberpunk Dark
+  // Theme mode: 'dark' keeps the site in its signature Dark Cyber Neon state;
+  // 'light' turns the entire site bright/white with crisp, readable dark text
   const [themeMode, setThemeMode] = useState(() => {
-    return localStorage.getItem('vitanex_theme') || 'contrast';
+    const saved = localStorage.getItem('vitanex_theme_v2');
+    return saved === 'light' ? 'light' : 'dark';
   });
 
   useEffect(() => {
-    localStorage.setItem('vitanex_theme', themeMode);
+    localStorage.setItem('vitanex_theme_v2', themeMode);
   }, [themeMode]);
 
   // Matrix Digital Rain Intro & Background state
   const [showIntro, setShowIntro] = useState(true);
   const [matrixEnabled, setMatrixEnabled] = useState(true);
 
-  // Navigation state (Multi-page SPA with hash sync)
+  // Navigation state
   const [activePage, setActivePage] = useState('home');
   const [selectedService, setSelectedService] = useState(SERVICES_DATA[0]);
   const [selectedCase, setSelectedCase] = useState(PORTFOLIO_CASES[0]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [portfolioFilter, setPortfolioFilter] = useState('All');
+
+  // Track scroll position so small circle only appears when scrolling down
+  const [showFloatingCircle, setShowFloatingCircle] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 460) {
+        setShowFloatingCircle(true);
+      } else {
+        setShowFloatingCircle(false);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Lead Modal & Success Popup state
   const [leadModalOpen, setLeadModalOpen] = useState(false);
@@ -105,7 +125,7 @@ export function App() {
         />
       )}
 
-      {/* Header & Slide-out Sidebar matching reference photos */}
+      {/* Header & Slide-out Sidebar */}
       <HeaderSidebar
         lang={lang}
         setLang={setLang}
@@ -127,9 +147,15 @@ export function App() {
         {/* ==================== HOME PAGE ==================== */}
         {activePage === 'home' && (
           <>
-            {/* HERO SECTION WITH MATRIX DIGITAL RAIN + WEZOM TYPOGRAPHY + ROUND "ОБСУДИТЬ ПРОЕКТ" BUTTON */}
+            {/* HERO SECTION */}
             <section className="wezom-hero-section">
-              {matrixEnabled && <MatrixCanvas opacity={0.42} speed={1} />}
+              {matrixEnabled && (
+                <MatrixCanvas
+                  opacity={themeMode === 'light' ? 0.22 : 0.42}
+                  lightMode={themeMode === 'light'}
+                  speed={1}
+                />
+              )}
               <div className="hero-glow-orb orb-cyan" />
               <div className="hero-glow-orb orb-purple" />
 
@@ -139,7 +165,7 @@ export function App() {
                   {t.hero.badge}
                 </div>
 
-                {/* Giant Split Typography from Reference Photos 3, 4, 5 */}
+                {/* Giant Split Typography + Single Big Circle CTA Button */}
                 <div className="wezom-giant-grid">
                   <div className="giant-row row-1">
                     <h1 className="giant-word gradient-cyber">
@@ -148,7 +174,7 @@ export function App() {
                   </div>
 
                   <div className="giant-row row-2">
-                    <div className="giant-word text-white">
+                    <div className="giant-word hero-main-word">
                       {t.hero.line2}
                     </div>
                     <p className="wezom-side-mission">
@@ -157,11 +183,11 @@ export function App() {
                   </div>
 
                   <div className="giant-row row-3">
-                    <div className="giant-word text-white">
+                    <div className="giant-word hero-main-word">
                       {t.hero.line3}
                     </div>
 
-                    {/* Signature Round Blue/Violet "↗ ОБСУДИТЬ ПРОЕКТ" Button from Reference Photo */}
+                    {/* Single Big Round Button "↗ ОБСУДИТЬ ПРОЕКТ" on Hero */}
                     <button
                       type="button"
                       className="discuss-circle-btn"
@@ -175,7 +201,7 @@ export function App() {
                   </div>
                 </div>
 
-                {/* Brand Showcase & 3 Core Pillars from VitaNeX Poster */}
+                {/* Hero Showcase: 3 Pillars on the left + Person Working at Laptop on the right */}
                 <div className="hero-showcase-grid">
                   <div className="hero-pillars-list">
                     {t.hero.pillars.map((p, idx) => (
@@ -199,18 +225,32 @@ export function App() {
                           rel="noreferrer"
                           className="hero-wa-chip"
                         >
-                          <span className="wa-online-dot" />
-                          WhatsApp: <strong>{phone.display}</strong>
+                          <WhatsAppIcon size={18} />
+                          <span>
+                            WhatsApp: <strong>{phone.display}</strong>
+                          </span>
                         </a>
                       ))}
+                      <a
+                        href={INSTAGRAM_INFO.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hero-wa-chip insta-chip"
+                      >
+                        <InstagramIcon size={18} />
+                        <span>
+                          Instagram: <strong>{INSTAGRAM_INFO.handle}</strong>
+                        </span>
+                      </a>
                     </div>
                   </div>
 
-                  <div className="hero-poster-card">
+                  {/* New photo: Person sitting and working at laptop in VitaNeX studio */}
+                  <div className="hero-workspace-card">
                     <img
-                      src="./assets/vitanex-promo.jpg"
-                      alt="VitaNeX Digital Studio — Создание сайтов под ключ"
-                      className="hero-poster-img"
+                      src="./assets/vitanex-workspace.jpg"
+                      alt="VitaNeX Digital Studio — Работа над вашим проектом"
+                      className="hero-workspace-img"
                     />
                   </div>
                 </div>
@@ -227,7 +267,7 @@ export function App() {
               </div>
             </section>
 
-            {/* SERVICES SECTION (Clean White/Contrast or Dark depending on theme) */}
+            {/* SERVICES SECTION */}
             <section className="content-section surface-alt">
               <div className="section-container">
                 <div className="section-header-row">
@@ -277,7 +317,7 @@ export function App() {
             </section>
 
             {/* FEATURED PORTFOLIO / CASES SECTION */}
-            <section className="content-section surface-dark">
+            <section className="content-section surface-primary">
               <div className="section-container">
                 <div className="section-header-row">
                   <div>
@@ -302,7 +342,7 @@ export function App() {
                       className={`filter-pill ${portfolioFilter === cat ? 'active' : ''}`}
                       onClick={() => setPortfolioFilter(cat)}
                     >
-                      {cat}
+                      {cat === 'All' ? t.sections.filterAll : cat}
                     </button>
                   ))}
                 </div>
@@ -323,7 +363,7 @@ export function App() {
                       <p className="case-card-desc">{c.challenge[lang]}</p>
 
                       <div className="case-metric-box">
-                        <div className="case-metric-val">{c.metric}</div>
+                        <div className="case-metric-val">{c.metric[lang]}</div>
                         <div className="case-metric-lbl">{c.metricLabel[lang]}</div>
                       </div>
 
@@ -367,19 +407,23 @@ export function App() {
               </div>
             </section>
 
-            {/* ABOUT COMPANY & WORKFLOW + TRUST TESTIMONIALS */}
-            <section className="content-section surface-dark">
+            {/* ABOUT COMPANY (WITH VIDEO) & WORKFLOW + TRUST TESTIMONIALS */}
+            <section className="content-section surface-primary">
               <div className="section-container">
                 <div className="about-split-layout">
                   <div className="about-brand-col">
                     <span className="section-tag">{t.sections.aboutTag}</span>
                     <h2 className="section-heading">{t.sections.aboutTitle}</h2>
                     <p className="section-sub">{t.sections.aboutSubtitle}</p>
-                    <div className="about-logo-showcase">
-                      <img
-                        src="./assets/vitanex-logo.jpg"
-                        alt="VitaNeX Digital Studio"
-                        className="about-logo-large"
+                    <div className="company-video-wrapper">
+                      <video
+                        src="./assets/vitanex-company.mp4"
+                        controls
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="company-showcase-video"
                       />
                     </div>
                   </div>
@@ -416,7 +460,7 @@ export function App() {
               </div>
             </section>
 
-            {/* LEAD GENERATION FORM SECTION ("ОБСУДИТЬ ПРОЕКТ") */}
+            {/* LEAD GENERATION FORM SECTION ("ОБСУДИТЬ ПРОЕКТ" / CONTACTS) */}
             <section id="discuss-project" className="content-section surface-lead">
               <div className="section-container">
                 <div className="lead-section-grid">
@@ -434,11 +478,29 @@ export function App() {
                           rel="noreferrer"
                           className="lead-wa-card"
                         >
-                          <div className="wa-card-badge">WhatsApp 24/7</div>
-                          <div className="wa-card-number">{phone.display}</div>
-                          <div className="wa-card-region">{phone.region[lang]}</div>
+                          <WhatsAppIcon size={36} />
+                          <div>
+                            <div className="wa-card-badge">WhatsApp 24/7</div>
+                            <div className="wa-card-number">{phone.display}</div>
+                            <div className="wa-card-region">{phone.region[lang]}</div>
+                          </div>
                         </a>
                       ))}
+
+                      {/* Instagram Link & Icon */}
+                      <a
+                        href={INSTAGRAM_INFO.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="lead-wa-card insta-card"
+                      >
+                        <InstagramIcon size={36} />
+                        <div>
+                          <div className="wa-card-badge insta-badge">Instagram</div>
+                          <div className="wa-card-number">{INSTAGRAM_INFO.handle}</div>
+                          <div className="wa-card-region">{INSTAGRAM_INFO.label[lang]}</div>
+                        </div>
+                      </a>
                     </div>
                   </div>
 
@@ -457,7 +519,7 @@ export function App() {
 
         {/* ==================== SERVICES PAGE ==================== */}
         {activePage === 'services' && (
-          <section className="content-section page-top-offset surface-dark">
+          <section className="content-section page-top-offset surface-primary">
             <div className="section-container">
               <span className="section-tag">{t.sections.servicesTag}</span>
               <h1 className="page-hero-title">{t.sections.servicesTitle}</h1>
@@ -497,7 +559,7 @@ export function App() {
 
         {/* ==================== SINGLE SERVICE DETAIL PAGE ==================== */}
         {activePage === 'service-detail' && selectedService && (
-          <section className="content-section page-top-offset surface-dark">
+          <section className="content-section page-top-offset surface-primary">
             <div className="section-container">
               <button
                 type="button"
@@ -550,7 +612,7 @@ export function App() {
 
         {/* ==================== PORTFOLIO PAGE ==================== */}
         {activePage === 'portfolio' && (
-          <section className="content-section page-top-offset surface-dark">
+          <section className="content-section page-top-offset surface-primary">
             <div className="section-container">
               <span className="section-tag">{t.sections.casesTag}</span>
               <h1 className="page-hero-title">{t.sections.casesTitle}</h1>
@@ -564,7 +626,7 @@ export function App() {
                     className={`filter-pill ${portfolioFilter === cat ? 'active' : ''}`}
                     onClick={() => setPortfolioFilter(cat)}
                   >
-                    {cat}
+                    {cat === 'All' ? t.sections.filterAll : cat}
                   </button>
                 ))}
               </div>
@@ -584,7 +646,7 @@ export function App() {
                     <h2 className="case-card-title">{c.title[lang]}</h2>
                     <p className="case-card-desc">{c.challenge[lang]}</p>
                     <div className="case-metric-box">
-                      <div className="case-metric-val">{c.metric}</div>
+                      <div className="case-metric-val">{c.metric[lang]}</div>
                       <div className="case-metric-lbl">{c.metricLabel[lang]}</div>
                     </div>
                     <div className="case-card-action">
@@ -599,7 +661,7 @@ export function App() {
 
         {/* ==================== SINGLE CASE STUDY DETAIL PAGE ==================== */}
         {activePage === 'case-detail' && selectedCase && (
-          <section className="content-section page-top-offset surface-dark">
+          <section className="content-section page-top-offset surface-primary">
             <div className="section-container">
               <button
                 type="button"
@@ -619,7 +681,7 @@ export function App() {
                 <h1 className="page-hero-title">{selectedCase.title[lang]}</h1>
 
                 <div className="case-metric-box highlight">
-                  <div className="case-metric-val">{selectedCase.metric}</div>
+                  <div className="case-metric-val">{selectedCase.metric[lang]}</div>
                   <div className="case-metric-lbl">
                     {selectedCase.metricLabel[lang]}
                   </div>
@@ -627,15 +689,15 @@ export function App() {
 
                 <div className="case-breakdown-grid">
                   <div className="case-block">
-                    <h3>01 // ЗАДАЧА / CHALLENGE</h3>
+                    <h3>{t.sections.challengeTitle}</h3>
                     <p>{selectedCase.challenge[lang]}</p>
                   </div>
                   <div className="case-block">
-                    <h3>02 // РЕШЕНИЕ / SOLUTION</h3>
+                    <h3>{t.sections.solutionTitle}</h3>
                     <p>{selectedCase.solution[lang]}</p>
                   </div>
                   <div className="case-block">
-                    <h3>03 // РЕЗУЛЬТАТ / RESULT</h3>
+                    <h3>{t.sections.resultTitle}</h3>
                     <p>{selectedCase.result[lang]}</p>
                   </div>
                 </div>
@@ -664,7 +726,7 @@ export function App() {
 
         {/* ==================== EXPERTISE PAGE ==================== */}
         {activePage === 'expertise' && (
-          <section className="content-section page-top-offset surface-dark">
+          <section className="content-section page-top-offset surface-primary">
             <div className="section-container">
               <span className="section-tag">{t.sections.expertiseTag}</span>
               <h1 className="page-hero-title">{t.sections.expertiseTitle}</h1>
@@ -683,20 +745,26 @@ export function App() {
           </section>
         )}
 
-        {/* ==================== ABOUT US PAGE ==================== */}
+        {/* ==================== ABOUT US / COMPANY PAGE (WITH VIDEO) ==================== */}
         {activePage === 'about' && (
-          <section className="content-section page-top-offset surface-dark">
+          <section className="content-section page-top-offset surface-primary">
             <div className="section-container">
               <div className="about-split-layout">
                 <div className="about-brand-col">
                   <span className="section-tag">{t.sections.aboutTag}</span>
                   <h1 className="page-hero-title">{t.sections.aboutTitle}</h1>
                   <p className="section-sub">{t.sections.aboutSubtitle}</p>
-                  <img
-                    src="./assets/vitanex-promo.jpg"
-                    alt="VitaNeX Digital Studio"
-                    className="hero-poster-img"
-                  />
+                  <div className="company-video-wrapper">
+                    <video
+                      src="./assets/vitanex-company.mp4"
+                      controls
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="company-showcase-video"
+                    />
+                  </div>
                 </div>
                 <div className="about-steps-col">
                   {ABOUT_FEATURES.map((feat) => (
@@ -716,7 +784,7 @@ export function App() {
 
         {/* ==================== BLOG PAGE ==================== */}
         {activePage === 'blog' && (
-          <section className="content-section page-top-offset surface-dark">
+          <section className="content-section page-top-offset surface-primary">
             <div className="section-container">
               <span className="section-tag">{t.sections.blogTag}</span>
               <h1 className="page-hero-title">{t.sections.blogTitle}</h1>
@@ -735,7 +803,9 @@ export function App() {
                     <h2 className="service-card-title">{post.title[lang]}</h2>
                     <p className="service-card-desc">{post.excerpt[lang]}</p>
                     <div className="service-card-footer">
-                      <span className="link-arrow">Read Article ↗</span>
+                      <span className="link-arrow">
+                        {t.sections.readArticleBtn}
+                      </span>
                     </div>
                   </article>
                 ))}
@@ -763,11 +833,29 @@ export function App() {
                         rel="noreferrer"
                         className="lead-wa-card"
                       >
-                        <div className="wa-card-badge">WhatsApp 24/7</div>
-                        <div className="wa-card-number">{phone.display}</div>
-                        <div className="wa-card-region">{phone.region[lang]}</div>
+                        <WhatsAppIcon size={36} />
+                        <div>
+                          <div className="wa-card-badge">WhatsApp 24/7</div>
+                          <div className="wa-card-number">{phone.display}</div>
+                          <div className="wa-card-region">{phone.region[lang]}</div>
+                        </div>
                       </a>
                     ))}
+
+                    {/* Instagram Link & Icon in Contacts Tab */}
+                    <a
+                      href={INSTAGRAM_INFO.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="lead-wa-card insta-card"
+                    >
+                      <InstagramIcon size={36} />
+                      <div>
+                        <div className="wa-card-badge insta-badge">Instagram</div>
+                        <div className="wa-card-number">{INSTAGRAM_INFO.handle}</div>
+                        <div className="wa-card-region">{INSTAGRAM_INFO.label[lang]}</div>
+                      </div>
+                    </a>
                   </div>
                 </div>
 
@@ -784,29 +872,32 @@ export function App() {
         )}
       </main>
 
-      {/* FOOTER */}
+      {/* FOOTER (with sharp rotating logo + WhatsApp icons next to numbers + Instagram icon) */}
       <footer className="vitanex-footer">
         <div className="section-container footer-grid">
           <div className="footer-brand-col">
-            <div className="brand-logo-btn" onClick={() => navigateTo('home')}>
-              <img
-                src="./assets/vitanex-logo.jpg"
-                alt="VitaNeX Logo"
-                className="brand-logo-img"
-              />
+            <button
+              type="button"
+              className="brand-logo-btn"
+              onClick={() => navigateTo('home')}
+            >
+              <VitaNexLogo size={68} />
               <div className="brand-logo-text">
                 <span className="brand-name">
                   Vita<span className="brand-accent">NeX</span>
                 </span>
                 <span className="brand-sub">DIGITAL STUDIO</span>
               </div>
-            </div>
+            </button>
             <p className="footer-tagline">
               IDEAS QUE HACEN CRECER TU NEGOCIO • RU / EN / ES
             </p>
           </div>
 
           <div className="footer-links-col">
+            <button type="button" onClick={() => navigateTo('home')}>
+              {t.nav.home}
+            </button>
             <button type="button" onClick={() => navigateTo('services')}>
               {t.nav.services}
             </button>
@@ -836,20 +927,30 @@ export function App() {
                 rel="noreferrer"
                 className="footer-wa-link"
               >
-                WhatsApp: {phone.display}
+                <WhatsAppIcon size={20} />
+                <span>{phone.display}</span>
               </a>
             ))}
+            <a
+              href={INSTAGRAM_INFO.url}
+              target="_blank"
+              rel="noreferrer"
+              className="footer-wa-link insta-footer-link"
+            >
+              <InstagramIcon size={20} />
+              <span>{INSTAGRAM_INFO.handle}</span>
+            </a>
           </div>
         </div>
         <div className="footer-bottom">
-          © {new Date().getFullYear()} VitaNeX Digital Studio. All rights reserved. PWA Enabled.
+          © {new Date().getFullYear()} VitaNeX Digital Studio. {t.sections.footerRights}
         </div>
       </footer>
 
-      {/* Floating Circular "↗ ОБСУДИТЬ ПРОЕКТ" Button for instant access on scroll */}
+      {/* Small Floating Circle Button "↗ ОБСУДИТЬ ПРОЕКТ" — appears ONLY when scrolling down */}
       <button
         type="button"
-        className="floating-discuss-circle"
+        className={`floating-discuss-circle ${showFloatingCircle ? 'visible' : 'hidden'}`}
         onClick={() => openLeadModal()}
         aria-label={t.nav.discussProject}
       >

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import {
   WHATSAPP_NUMBERS,
+  INSTAGRAM_INFO,
   SERVICES_DATA,
   EXPERTISE_INDUSTRIES
 } from '../services/i18nData';
+import { VitaNexLogo, WhatsAppIcon, InstagramIcon } from './BrandIcons';
 
 export function HeaderSidebar({
   lang,
@@ -35,17 +37,13 @@ export function HeaderSidebar({
     <>
       <header className="wezom-header">
         <div className="header-container">
-          {/* Brand Logo */}
+          {/* Brand Logo with sharp rotating vector circle */}
           <button
             type="button"
             className="brand-logo-btn"
             onClick={() => handleNavClick('home')}
           >
-            <img
-              src="./assets/vitanex-logo.jpg"
-              alt="VitaNeX Logo"
-              className="brand-logo-img"
-            />
+            <VitaNexLogo size={62} />
             <div className="brand-logo-text">
               <span className="brand-name">
                 Vita<span className="brand-accent">NeX</span>
@@ -54,9 +52,8 @@ export function HeaderSidebar({
             </div>
           </button>
 
-          {/* Main Navigation matching Wezom reference photo */}
+          {/* Main Navigation */}
           <nav className="main-nav" aria-label="Main Navigation">
-            {/* УСЛУГИ ⌄ */}
             <div
               className="nav-item-wrapper"
               onMouseEnter={() => setActiveDropdown('services')}
@@ -92,7 +89,6 @@ export function HeaderSidebar({
               )}
             </div>
 
-            {/* ЭКСПЕРТИЗА ⌄ */}
             <div
               className="nav-item-wrapper"
               onMouseEnter={() => setActiveDropdown('expertise')}
@@ -128,7 +124,6 @@ export function HeaderSidebar({
               )}
             </div>
 
-            {/* КЕЙСЫ */}
             <button
               type="button"
               className={`nav-link ${activePage === 'portfolio' ? 'active' : ''}`}
@@ -137,7 +132,6 @@ export function HeaderSidebar({
               {t.nav.cases}
             </button>
 
-            {/* КОМПАНИЯ ⌄ */}
             <div
               className="nav-item-wrapper"
               onMouseEnter={() => setActiveDropdown('company')}
@@ -181,7 +175,6 @@ export function HeaderSidebar({
               )}
             </div>
 
-            {/* БЛОГ */}
             <button
               type="button"
               className={`nav-link ${activePage === 'blog' ? 'active' : ''}`}
@@ -190,7 +183,6 @@ export function HeaderSidebar({
               {t.nav.blog}
             </button>
 
-            {/* КОНТАКТЫ */}
             <button
               type="button"
               className={`nav-link ${activePage === 'contacts' ? 'active' : ''}`}
@@ -200,9 +192,8 @@ export function HeaderSidebar({
             </button>
           </nav>
 
-          {/* Right Action Area matching photo: Phone numbers + White Pill Button + RU ⌄ + Drawer button */}
+          {/* Right Actions: WhatsApp Numbers with Icons + Contact Pill + Language + Theme Toggle + Drawer */}
           <div className="header-actions">
-            {/* WhatsApp Two Numbers Block */}
             <div
               className="header-phones-wrapper"
               onMouseEnter={() => setPhoneMenuOpen(true)}
@@ -215,8 +206,8 @@ export function HeaderSidebar({
                   rel="noreferrer"
                   className="header-phone-main"
                 >
-                  <span className="wa-dot" />
-                  {WHATSAPP_NUMBERS[0].display}
+                  <WhatsAppIcon size={18} />
+                  <span>{WHATSAPP_NUMBERS[0].display}</span>
                 </a>
                 <a
                   href={WHATSAPP_NUMBERS[1].url}
@@ -224,7 +215,8 @@ export function HeaderSidebar({
                   rel="noreferrer"
                   className="header-phone-sub"
                 >
-                  WhatsApp: {WHATSAPP_NUMBERS[1].display} ⌄
+                  <WhatsAppIcon size={15} />
+                  <span>{WHATSAPP_NUMBERS[1].display} ⌄</span>
                 </a>
               </div>
 
@@ -239,18 +231,30 @@ export function HeaderSidebar({
                       rel="noreferrer"
                       className="phone-dropdown-item"
                     >
-                      <span className="wa-badge">WhatsApp</span>
+                      <WhatsAppIcon size={26} />
                       <div>
                         <div className="phone-number-strong">{phone.display}</div>
                         <div className="phone-region">{phone.region[lang]}</div>
                       </div>
                     </a>
                   ))}
+                  <a
+                    href={INSTAGRAM_INFO.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="phone-dropdown-item insta-item"
+                  >
+                    <InstagramIcon size={26} />
+                    <div>
+                      <div className="phone-number-strong">{INSTAGRAM_INFO.handle}</div>
+                      <div className="phone-region">Instagram</div>
+                    </div>
+                  </a>
                 </div>
               )}
             </div>
 
-            {/* White Pill Button "СВЯЗАТЬСЯ С НАМИ" from reference photo */}
+            {/* Pill Button "СВЯЗАТЬСЯ С НАМИ" */}
             <button
               type="button"
               className="btn-contact-pill"
@@ -259,7 +263,7 @@ export function HeaderSidebar({
               {t.nav.contactUs}
             </button>
 
-            {/* Language Selector RU ⌄ */}
+            {/* Language Selector RU / EN / ES */}
             <div className="lang-selector-wrapper">
               <button
                 type="button"
@@ -291,18 +295,23 @@ export function HeaderSidebar({
               )}
             </div>
 
-            {/* Theme Switcher (Dark Neon vs Contrast Light/Dark) */}
+            {/* Theme Switcher Button: Dark vs Light */}
             <button
               type="button"
-              className="icon-util-btn"
+              className="theme-toggle-btn"
               onClick={() =>
-                setThemeMode(themeMode === 'dark' ? 'contrast' : 'dark')
+                setThemeMode(themeMode === 'dark' ? 'light' : 'dark')
               }
               title={
-                themeMode === 'dark' ? t.nav.themeContrast : t.nav.themeDark
+                themeMode === 'dark' ? t.nav.themeLight : t.nav.themeDark
               }
             >
-              {themeMode === 'dark' ? '☀' : '☾'}
+              <span className="theme-icon">
+                {themeMode === 'dark' ? '☀' : '☾'}
+              </span>
+              <span className="theme-label">
+                {themeMode === 'dark' ? t.nav.themeLight : t.nav.themeDark}
+              </span>
             </button>
 
             {/* Sidebar / Drawer Open Button */}
@@ -310,7 +319,7 @@ export function HeaderSidebar({
               type="button"
               className="drawer-toggle-btn"
               onClick={() => setDrawerOpen(true)}
-              aria-label="Open Navigation Drawer"
+              aria-label="Open Sidebar Menu"
             >
               <span className="burger-line" />
               <span className="burger-line" />
@@ -320,7 +329,7 @@ export function HeaderSidebar({
         </div>
       </header>
 
-      {/* Slide-out Sidebar / Drawer (Mobile & Desktop Wezom-style Sidebar) */}
+      {/* Slide-out Sidebar / Drawer */}
       {drawerOpen && (
         <div
           className="sidebar-backdrop"
@@ -331,12 +340,11 @@ export function HeaderSidebar({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sidebar-top">
-              <div className="brand-logo-btn">
-                <img
-                  src="./assets/vitanex-logo.jpg"
-                  alt="VitaNeX"
-                  className="brand-logo-img"
-                />
+              <div
+                className="brand-logo-btn"
+                onClick={() => handleNavClick('home')}
+              >
+                <VitaNexLogo size={58} />
                 <div className="brand-logo-text">
                   <span className="brand-name">
                     Vita<span className="brand-accent">NeX</span>
@@ -353,7 +361,7 @@ export function HeaderSidebar({
               </button>
             </div>
 
-            {/* Language Pills in Sidebar */}
+            {/* Language & Theme Pills in Sidebar */}
             <div className="sidebar-langs">
               {['ru', 'en', 'es'].map((code) => (
                 <button
@@ -367,12 +375,17 @@ export function HeaderSidebar({
               ))}
               <button
                 type="button"
-                className="sidebar-lang-pill"
-                onClick={() =>
-                  setThemeMode(themeMode === 'dark' ? 'contrast' : 'dark')
-                }
+                className={`sidebar-lang-pill ${themeMode === 'dark' ? 'active' : ''}`}
+                onClick={() => setThemeMode('dark')}
               >
-                {themeMode === 'dark' ? '☀ Light/Dark' : '☾ Cyber Dark'}
+                ☾ {t.nav.themeDark}
+              </button>
+              <button
+                type="button"
+                className={`sidebar-lang-pill ${themeMode === 'light' ? 'active' : ''}`}
+                onClick={() => setThemeMode('light')}
+              >
+                ☀ {t.nav.themeLight}
               </button>
             </div>
 
@@ -383,7 +396,7 @@ export function HeaderSidebar({
                 className="sidebar-nav-item"
                 onClick={() => handleNavClick('home')}
               >
-                <span>00</span> HOME // VITANEX
+                <span>00</span> {t.nav.home}
               </button>
               <button
                 type="button"
@@ -429,7 +442,7 @@ export function HeaderSidebar({
               </button>
             </div>
 
-            {/* Two WhatsApp Contacts inside Sidebar */}
+            {/* Two WhatsApp Contacts + Instagram inside Sidebar */}
             <div className="sidebar-contacts-box">
               <div className="sidebar-box-label">{t.nav.whatsappLabel}</div>
               {WHATSAPP_NUMBERS.map((phone) => (
@@ -440,16 +453,28 @@ export function HeaderSidebar({
                   rel="noreferrer"
                   className="sidebar-wa-link"
                 >
-                  <span className="wa-icon-circle">WA</span>
+                  <WhatsAppIcon size={32} />
                   <div>
                     <div className="sidebar-wa-num">{phone.display}</div>
                     <div className="sidebar-wa-reg">{phone.region[lang]}</div>
                   </div>
                 </a>
               ))}
+              <a
+                href={INSTAGRAM_INFO.url}
+                target="_blank"
+                rel="noreferrer"
+                className="sidebar-wa-link"
+              >
+                <InstagramIcon size={32} />
+                <div>
+                  <div className="sidebar-wa-num">{INSTAGRAM_INFO.handle}</div>
+                  <div className="sidebar-wa-reg">{INSTAGRAM_INFO.label[lang]}</div>
+                </div>
+              </a>
             </div>
 
-            {/* Utilities & Circular CTA Button inside Sidebar */}
+            {/* Utilities & CTA Button inside Sidebar */}
             <div className="sidebar-footer-actions">
               <div className="sidebar-toggles">
                 <button
@@ -467,7 +492,7 @@ export function HeaderSidebar({
                     onReplayIntro();
                   }}
                 >
-                  ▶ Matrix Intro
+                  ▶ {t.nav.matrixIntroBtn}
                 </button>
                 {canInstallPwa && (
                   <button

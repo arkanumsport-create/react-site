@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SERVICES_DATA, WHATSAPP_NUMBERS } from '../services/i18nData';
+import { WhatsAppIcon } from './BrandIcons';
 
 export function LeadForm({ t, lang, preselectedService = '', onSuccess }) {
   const [name, setName] = useState('');
@@ -7,19 +8,11 @@ export function LeadForm({ t, lang, preselectedService = '', onSuccess }) {
   const [service, setService] = useState(
     preselectedService || SERVICES_DATA[0].title[lang]
   );
+  const [selectedWa, setSelectedWa] = useState(WHATSAPP_NUMBERS[0].raw);
   const [task, setTask] = useState('');
   const [consent, setConsent] = useState(true);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-
-  // Optional Telegram Bot API settings (stored in localStorage so owner can configure from UI or env)
-  const [showTgConfig, setShowTgConfig] = useState(false);
-  const [tgToken, setTgToken] = useState(
-    () => localStorage.getItem('vitanex_tg_token') || import.meta.env.VITE_TG_BOT_TOKEN || ''
-  );
-  const [tgChatId, setTgChatId] = useState(
-    () => localStorage.getItem('vitanex_tg_chat_id') || import.meta.env.VITE_TG_CHAT_ID || ''
-  );
 
   const validate = () => {
     const newErrors = {};
@@ -28,14 +21,14 @@ export function LeadForm({ t, lang, preselectedService = '', onSuccess }) {
     }
     const cleanContact = contact.trim();
     const isPhoneOrEmail =
-      cleanContact.length >= 6 &&
-      (/^[+\d\s()-]{6,}$/.test(cleanContact) ||
+      cleanContact.length >= 5 &&
+      (/^[+\d\s()-]{5,}$/.test(cleanContact) ||
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanContact) ||
         cleanContact.startsWith('@'));
     if (!isPhoneOrEmail) {
       newErrors.contact = t.form.errors.contact;
     }
-    if (!task || task.trim().length < 10) {
+    if (!task || task.trim().length < 5) {
       newErrors.task = t.form.errors.task;
     }
     if (!consent) {
@@ -45,7 +38,36 @@ export function LeadForm({ t, lang, preselectedService = '', onSuccess }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const buildWhatsappUrl = (phoneRaw, payloadObj) => {
+    const lines =
+      lang === 'es'
+        ? [
+            `¡Hola, VitaNeX Digital Studio! 👋`,
+            `👤 Nombre: ${payloadObj.name}`,
+            `📞 Contacto: ${payloadObj.contact}`,
+            `💼 Servicio: ${payloadObj.service}`,
+            `📝 Proyecto: ${payloadObj.task}`
+          ]
+        : lang === 'en'
+          ? [
+              `Hello, VitaNeX Digital Studio! 👋`,
+              `👤 Name: ${payloadObj.name}`,
+              `📞 Contact: ${payloadObj.contact}`,
+              `💼 Service: ${payloadObj.service}`,
+              `📝 Project: ${payloadObj.task}`
+            ]
+          : [
+              `Здравствуйте, VitaNeX Digital Studio! 👋`,
+              `👤 Имя: ${payloadObj.name}`,
+              `📞 Контакт: ${payloadObj.contact}`,
+              `💼 Направление: ${payloadObj.service}`,
+              `📝 Задача: ${payloadObj.task}`
+            ];
+
+    return `https://wa.me/${phoneRaw}?text=${encodeURIComponent(lines.join('\n'))}`;
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
 
@@ -58,61 +80,19 @@ export function LeadForm({ t, lang, preselectedService = '', onSuccess }) {
       name: name.trim(),
       contact: contact.trim(),
       service,
-      task: task.trim()
+      task: task.trim(),
+      targetPhone: selectedWa
     };
 
-    // Save lead to localStorage log
-    try {
-      const existing = JSON.parse(localStorage.getItem('vitanex_leads') || '[]');
-      existing.unshift(payload);
-      localStorage.setItem('vitanex_leads', JSON.stringify(existing.slice(0, 50)));
-    } catch {
-      // ignore storage errors
-    }
-
-    // Send to Telegram Bot API if token & chat_id are provided
-    if (tgToken && tgChatId) {
-      localStorage.setItem('vitanex_tg_token', tgToken);
-      localStorage.setItem('vitanex_tg_chat_id', tgChatId);
-      const text = [
-        `🚀 *Новая заявка VitaNeX Digital Studio*`,
-        `👤 *Имя:* ${payload.name}`,
-        `📞 *Контакт:* ${payload.contact}`,
-        `💼 *Услуга:* ${payload.service}`,
-        `📝 *Задача:* ${payload.task}`,
-        `🌐 *Язык:* ${payload.lang}`
-      ].join('\n');
-
-      try {
-        await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: tgChatId,
-            text,
-            parse_mode: 'Markdown'
-          })
-        });
-      } catch {
-        // Fallback gracefully if network or token fails
-      }
-    } else {
-      await new Promise((r) => setTimeout(r, 550));
-    }
+    const waUrl = buildWhatsappUrl(selectedWa, payload);
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
 
     setSubmitting(false);
     setName('');
     setContact('');
     setTask('');
     setErrors({});
-    if (onSuccess) onSuccess(payload);
-  };
-
-  const buildWhatsappUrl = (phoneRaw) => {
-    const msg = encodeURIComponent(
-      `Здравствуйте, VitaNeX Digital Studio!\nИмя: ${name || '-'}\nКонтакт: ${contact || '-'}\nУслуга: ${service}\nЗадача: ${task || 'Хочу обсудить разработку проекта'}`
-    );
-    return `https://wa.me/${phoneRaw}?text=${msg}`;
+    if (onSuccess) onSuccess({ ...payload, waUrl });
   };
 
   return (
@@ -172,6 +152,27 @@ export function LeadForm({ t, lang, preselectedService = '', onSuccess }) {
         {errors.task && <span className="error-text">{errors.task}</span>}
       </div>
 
+      {/* Choose which WhatsApp number receives the message */}
+      <div className="form-group">
+        <label className="form-label">{t.form.whatsappTargetLabel}</label>
+        <div className="wa-target-selector">
+          {WHATSAPP_NUMBERS.map((phone) => (
+            <button
+              key={phone.raw}
+              type="button"
+              className={`wa-target-option ${selectedWa === phone.raw ? 'active' : ''}`}
+              onClick={() => setSelectedWa(phone.raw)}
+            >
+              <WhatsAppIcon size={20} />
+              <div className="wa-target-text">
+                <span className="wa-target-num">{phone.display}</span>
+                <span className="wa-target-reg">{phone.region[lang]}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="form-checkbox-group">
         <label className="checkbox-label">
           <input
@@ -186,60 +187,17 @@ export function LeadForm({ t, lang, preselectedService = '', onSuccess }) {
         )}
       </div>
 
-      {/* Telegram Bot API Optional Config Accordion */}
-      <div className="tg-config-box">
-        <button
-          type="button"
-          className="tg-config-toggle"
-          onClick={() => setShowTgConfig(!showTgConfig)}
-        >
-          ⚙ {t.form.tgSettingsToggle} {showTgConfig ? '▲' : '▼'}
-        </button>
-        {showTgConfig && (
-          <div className="tg-config-Body">
-            <p className="tg-hint">{t.form.tgHint}</p>
-            <div className="form-row-2">
-              <input
-                type="password"
-                className="form-input compact"
-                placeholder={t.form.tgBotTokenPlaceholder}
-                value={tgToken}
-                onChange={(e) => setTgToken(e.target.value)}
-              />
-              <input
-                type="text"
-                className="form-input compact"
-                placeholder={t.form.tgChatIdPlaceholder}
-                value={tgChatId}
-                onChange={(e) => setTgChatId(e.target.value)}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+      <p className="wa-direct-hint">{t.form.directHint}</p>
 
       <div className="form-submit-actions">
         <button
           type="submit"
-          className="btn-neon-submit"
+          className="btn-neon-submit wa-submit-btn"
           disabled={submitting}
         >
-          {submitting ? t.form.submittingBtn : `↗ ${t.form.submitBtn}`}
+          <WhatsAppIcon size={22} />
+          <span>{submitting ? t.form.submittingBtn : t.form.submitBtn}</span>
         </button>
-
-        <div className="direct-wa-buttons">
-          {WHATSAPP_NUMBERS.map((phone) => (
-            <a
-              key={phone.raw}
-              href={buildWhatsappUrl(phone.raw)}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-wa-direct"
-            >
-              WhatsApp {phone.display}
-            </a>
-          ))}
-        </div>
       </div>
     </form>
   );
@@ -272,7 +230,8 @@ export function SuccessPopup({ payload, t, onClose }) {
               rel="noreferrer"
               className="btn-wa-direct"
             >
-              WhatsApp: {p.display}
+              <WhatsAppIcon size={18} />
+              <span>WhatsApp: {p.display}</span>
             </a>
           ))}
         </div>

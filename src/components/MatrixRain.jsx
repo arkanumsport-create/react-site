@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
+import { VitaNexLogo } from './BrandIcons';
 
 const MATRIX_CHARS = '012345678901234567890123456789VITANEX<>/{}[]+$#@*';
 
-// Cyberpunk palette matching VitaNeX logo: Neon Turquoise, Cyan, Electric Purple, Magenta
 const NEON_COLORS = [
-  '#00f0ff', // Neon Turquoise
-  '#00d2ff', // Electric Cyan
-  '#38bdf8', // Sky Neon
-  '#b829ff', // Cyberpunk Purple
-  '#d946ef', // Neon Magenta
-  '#8b5cf6'  // Deep Violet Neon
+  '#00f0ff',
+  '#00d2ff',
+  '#38bdf8',
+  '#b829ff',
+  '#d946ef',
+  '#8b5cf6'
 ];
 
 export function MatrixCanvas({ opacity = 0.38, lightMode = false, speed = 1 }) {
@@ -54,9 +54,8 @@ export function MatrixCanvas({ opacity = 0.38, lightMode = false, speed = 1 }) {
       if (timestamp - lastTime < interval) return;
       lastTime = timestamp;
 
-      // Trail fade
       ctx.fillStyle = lightMode
-        ? 'rgba(248, 250, 255, 0.14)'
+        ? 'rgba(255, 255, 255, 0.16)'
         : 'rgba(6, 7, 17, 0.12)';
       ctx.fillRect(0, 0, width, height);
 
@@ -70,13 +69,12 @@ export function MatrixCanvas({ opacity = 0.38, lightMode = false, speed = 1 }) {
 
         const baseColor = colColors[i];
 
-        // Leading bright head of the digital rain stream
         if (Math.random() > 0.78) {
           ctx.fillStyle = lightMode ? '#6d28d9' : '#e0ffff';
           ctx.shadowColor = baseColor;
-          ctx.shadowBlur = lightMode ? 4 : 12;
+          ctx.shadowBlur = lightMode ? 3 : 12;
         } else {
-          ctx.fillStyle = baseColor;
+          ctx.fillStyle = lightMode ? '#0284c7' : baseColor;
           ctx.shadowColor = baseColor;
           ctx.shadowBlur = lightMode ? 2 : 8;
         }
@@ -123,12 +121,8 @@ export function MatrixIntroOverlay({ onComplete, t }) {
     <div className="matrix-intro-overlay" onClick={onComplete}>
       <MatrixCanvas opacity={0.92} speed={1.45} />
       <div className="matrix-intro-content" onClick={(e) => e.stopPropagation()}>
-        <div className="matrix-logo-ring">
-          <img
-            src="./assets/vitanex-logo.jpg"
-            alt="VitaNeX Digital Studio"
-            className="matrix-intro-logo"
-          />
+        <div className="matrix-logo-center">
+          <VitaNexLogo size={142} />
         </div>
         <div className="matrix-intro-code">{t.matrixIntro.subtitle}</div>
         <h2 className="matrix-intro-title">
