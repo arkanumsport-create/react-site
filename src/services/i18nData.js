@@ -56,7 +56,7 @@ export const TRANSLATIONS = {
     },
     matrixIntro: {
       subtitle: 'INITIALIZING CYBER-CORE // VITANEX DIGITAL STUDIO',
-      tagline: 'ИДЕИ, КОТОРЫЕ РАСТЯТ ВАШ БИЗНЕС',
+      tagline: 'ИДЕИ, Меняющие Реальность',
       skip: 'Перейти на сайт ↗'
     },
     hero: {
@@ -171,7 +171,7 @@ export const TRANSLATIONS = {
     },
     matrixIntro: {
       subtitle: 'INITIALIZING CYBER-CORE // VITANEX DIGITAL STUDIO',
-      tagline: 'IDEAS THAT GROW YOUR BUSINESS',
+      tagline: 'IDEAS that Change Reality',
       skip: 'Enter Website ↗'
     },
     hero: {
@@ -286,7 +286,7 @@ export const TRANSLATIONS = {
     },
     matrixIntro: {
       subtitle: 'INITIALIZING CYBER-CORE // VITANEX DIGITAL STUDIO',
-      tagline: 'IDEAS QUE HACEN CRECER TU NEGOCIO',
+      tagline: 'IDEAS QUE cambian la Realidad',
       skip: 'Entrar al sitio ↗'
     },
     hero: {

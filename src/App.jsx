@@ -199,6 +199,7 @@ export function App() {
                   <span className="pulse-dot" />
                   {t.hero.badge}
                 </div>
+                <div className="hero-red-slogan">{t.matrixIntro.tagline}</div>
 
                 {/* Giant Split Typography + Single Big Circle CTA Button */}
                 <div className="wezom-giant-grid">

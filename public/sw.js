@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vitanex-pwa-v5';
+const CACHE_NAME = 'vitanex-pwa-v6';
 const STATIC_ASSETS = [
   './',
   './index.html',
