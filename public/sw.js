@@ -1,9 +1,8 @@
-const CACHE_NAME = 'vitanex-pwa-v4';
+const CACHE_NAME = 'vitanex-pwa-v5';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './assets/vitanex-workspace.jpg',
   './assets/icon-192.png',
   './assets/icon-512.png'
 ];

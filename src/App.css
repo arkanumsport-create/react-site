@@ -2872,3 +2872,55 @@
     font-size: 9px;
   }
 }
+
+
+/* ==========================================================================
+   HERO VIDEO & SAFE-AREA / STANDALONE PWA TOP HEADER OFFSET FIX
+   ========================================================================== */
+.hero-workspace-video {
+  width: 100%;
+  max-height: 520px;
+  border-radius: 20px;
+  display: block;
+  background: #05060f;
+  object-fit: cover;
+}
+
+/* Push top header and sidebar drawer down below iPhone/Android status bar & Dynamic Island */
+.wezom-header {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@media (max-width: 768px) {
+  .wezom-header {
+    padding-top: max(env(safe-area-inset-top, 0px), 12px);
+  }
+
+  .header-container {
+    padding: 10px 12px 10px;
+    align-items: center;
+  }
+
+  .sidebar-drawer {
+    padding-top: max(calc(env(safe-area-inset-top, 0px) + 16px), 24px);
+  }
+}
+
+/* Specifically when opened as an installed PWA on iPhone (iOS) or Android */
+.pwa-standalone .wezom-header {
+  padding-top: max(calc(env(safe-area-inset-top, 0px) + 12px), 52px) !important;
+}
+
+.pwa-standalone .sidebar-drawer {
+  padding-top: max(calc(env(safe-area-inset-top, 0px) + 16px), 56px) !important;
+}
+
+@media all and (display-mode: standalone) {
+  .wezom-header {
+    padding-top: max(calc(env(safe-area-inset-top, 0px) + 12px), 52px) !important;
+  }
+
+  .sidebar-drawer {
+    padding-top: max(calc(env(safe-area-inset-top, 0px) + 16px), 56px) !important;
+  }
+}

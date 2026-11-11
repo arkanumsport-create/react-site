@@ -141,8 +141,15 @@ export function App() {
       ? PORTFOLIO_CASES
       : PORTFOLIO_CASES.filter((c) => c.category === portfolioFilter);
 
+  const isStandalonePwa =
+    typeof window !== 'undefined' &&
+    (window.navigator.standalone === true ||
+      window.matchMedia('(display-mode: standalone)').matches);
+
   return (
-    <div className={`app-shell theme-${themeMode}`}>
+    <div
+      className={`app-shell theme-${themeMode} ${isStandalonePwa ? 'pwa-standalone' : ''}`}
+    >
       {/* Matrix Falling Digits Intro when opening the website */}
       {showIntro && (
         <MatrixIntroOverlay
@@ -281,13 +288,20 @@ export function App() {
                     </div>
                   </div>
 
-                  {/* New photo: Person sitting and working at laptop in VitaNeX studio */}
+                  {/* Hero Video replacing the static photo on the Home page */}
                   <div className="hero-workspace-card">
-                    <img
-                      src="./assets/vitanex-workspace.jpg"
-                      alt="VitaNeX Digital Studio — Работа над вашим проектом"
-                      className="hero-workspace-img"
-                    />
+                    <video
+                      src="./assets/vitanex-hero.mp4"
+                      controls
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="hero-workspace-video"
+                    >
+                      <source src="./assets/vitanex-hero.mp4" type="video/mp4" />
+                      <source src="./assets/vitanex-hero.mp4" type="video/quicktime" />
+                    </video>
                   </div>
                 </div>
 
