@@ -2579,3 +2579,296 @@
   line-height: 1.5;
   opacity: 0.85;
 }
+
+
+/* ==========================================================================
+   SINGLE-LINE HEADER PHONE, MULTICOLOR BLINKING CONTACT BUTTON & MOBILE/PWA FIT
+   ========================================================================== */
+.matrix-intro-langs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Single phone number +58 412 377 6184 in one line in the top bar */
+.header-phone-single {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(37, 211, 102, 0.12);
+  border: 1px solid rgba(37, 211, 102, 0.4);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.theme-light .header-phone-single {
+  color: #0f172a;
+  background: rgba(37, 211, 102, 0.14);
+  border-color: #22c55e;
+}
+
+.header-phone-single:hover {
+  transform: translateY(-1px);
+  background: rgba(37, 211, 102, 0.24);
+}
+
+/* Narrower / Compact "СВЯЗАТЬСЯ С НАМИ" Button with Multicolor Blinking Animation */
+.header-contact-btn.blink-multicolor {
+  padding: 9px 15px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  color: #ffffff !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  animation: multicolorNeonBlink 3.2s infinite ease-in-out;
+}
+
+@keyframes multicolorNeonBlink {
+  0%,
+  100% {
+    background: linear-gradient(135deg, #00f0ff, #0284c7);
+    color: #040814 !important;
+    box-shadow: 0 0 18px rgba(0, 240, 255, 0.85);
+    border-color: #ffffff;
+  }
+  25% {
+    background: linear-gradient(135deg, #b829ff, #6d28d9);
+    color: #ffffff !important;
+    box-shadow: 0 0 22px rgba(184, 41, 255, 0.9);
+    border-color: #f0abfc;
+  }
+  50% {
+    background: linear-gradient(135deg, #f43f5e, #ec4899);
+    color: #ffffff !important;
+    box-shadow: 0 0 22px rgba(244, 63, 94, 0.9);
+    border-color: #fecdd3;
+  }
+  75% {
+    background: linear-gradient(135deg, #10b981, #00d2ff);
+    color: #04120c !important;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.85);
+    border-color: #a7f3d0;
+  }
+}
+
+/* ==========================================================================
+   MOBILE & PWA PHONE SCREEN ADAPTATION (NO ZOOM NEEDED, STACKED LOGO TEXT)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 8px 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  /* Stack "VitaNeX DIGITAL STUDIO" directly UNDER the circular logo on mobile & mobile PWA */
+  .wezom-header .brand-logo-btn {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+
+  .wezom-header .brand-logo-btn .vitanex-vector-logo {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .wezom-header .brand-logo-btn .vitanex-vector-logo svg {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .wezom-header .brand-name {
+    font-size: 12px;
+    line-height: 1.05;
+  }
+
+  .wezom-header .brand-sub {
+    font-size: 7px;
+    letter-spacing: 0.14em;
+    line-height: 1.1;
+  }
+
+  /* Keep both the single phone number AND the blinking contact button visible & fitted on mobile */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .header-phones-wrapper {
+    display: inline-flex !important;
+  }
+
+  .header-phone-single {
+    font-size: 11px;
+    padding: 5px 8px;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .header-contact-btn.blink-multicolor {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    font-size: 9.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .header-pwa-btn {
+    height: 30px;
+    padding: 0 9px;
+    font-size: 10.5px;
+  }
+
+  .lang-trigger-btn {
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+
+  .theme-toggle-btn {
+    height: 30px;
+    padding: 0 9px;
+  }
+
+  .drawer-toggle-btn {
+    width: 34px;
+    height: 30px;
+    padding: 0 7px;
+  }
+
+  /* Slide-out Sidebar Drawer fits 100% of phone screen without shifting */
+  .sidebar-drawer {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    padding: 14px 16px;
+    box-sizing: border-box;
+  }
+
+  .sidebar-drawer .brand-logo-btn {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 3px;
+  }
+
+  .sidebar-nav-list {
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .sidebar-nav-item {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+
+  .sidebar-contacts-box {
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+
+  /* Mobile Content & Hero Fit */
+  .section-container {
+    padding: 0 14px;
+  }
+
+  .wezom-hero-section {
+    padding: 28px 0 44px;
+    min-height: auto;
+  }
+
+  .hero-top-badge {
+    font-size: 10px;
+    padding: 6px 12px;
+    margin-bottom: 18px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .giant-word {
+    font-size: clamp(28px, 9.5vw, 46px);
+    word-break: break-word;
+  }
+
+  .giant-row.row-1,
+  .giant-row.row-2,
+  .giant-row.row-3 {
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  .wezom-side-mission {
+    font-size: 13px;
+    max-width: 100%;
+  }
+
+  .discuss-circle-btn {
+    width: 132px;
+    height: 132px;
+    margin: 8px auto 0;
+  }
+
+  .circle-text {
+    font-size: 11.5px;
+  }
+
+  .hero-pillar-card {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .hero-stats-bar {
+    padding: 18px 16px;
+    gap: 14px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .content-section {
+    padding: 54px 0;
+  }
+
+  .service-card,
+  .case-card,
+  .expertise-card,
+  .vitanex-lead-form,
+  .detail-hero-card {
+    padding: 20px 16px;
+  }
+
+  .matrix-intro-content {
+    padding: 24px 18px;
+  }
+
+  .matrix-intro-title {
+    font-size: 19px;
+  }
+
+  .floating-discuss-circle {
+    width: 88px;
+    height: 88px;
+    right: 14px;
+    bottom: 14px;
+    font-size: 9px;
+  }
+}

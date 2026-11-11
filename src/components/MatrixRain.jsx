@@ -109,11 +109,11 @@ export function MatrixCanvas({ opacity = 0.38, lightMode = false, speed = 1 }) {
   );
 }
 
-export function MatrixIntroOverlay({ onComplete, t }) {
+export function MatrixIntroOverlay({ onComplete, t, lang, setLang }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
-    }, 2800);
+    }, 3200);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
@@ -121,8 +121,22 @@ export function MatrixIntroOverlay({ onComplete, t }) {
     <div className="matrix-intro-overlay" onClick={onComplete}>
       <MatrixCanvas opacity={0.92} speed={1.45} />
       <div className="matrix-intro-content" onClick={(e) => e.stopPropagation()}>
+        {setLang && (
+          <div className="matrix-intro-langs">
+            {['ru', 'en', 'es'].map((code) => (
+              <button
+                key={code}
+                type="button"
+                className={`sidebar-lang-pill ${lang === code ? 'active' : ''}`}
+                onClick={() => setLang(code)}
+              >
+                {code.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        )}
         <div className="matrix-logo-center">
-          <VitaNexLogo size={142} />
+          <VitaNexLogo size={136} />
         </div>
         <div className="matrix-intro-code">{t.matrixIntro.subtitle}</div>
         <h2 className="matrix-intro-title">

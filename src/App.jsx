@@ -147,6 +147,8 @@ export function App() {
       {showIntro && (
         <MatrixIntroOverlay
           t={t}
+          lang={lang}
+          setLang={setLang}
           onComplete={() => setShowIntro(false)}
         />
       )}
@@ -924,7 +926,7 @@ export function App() {
               </div>
             </button>
             <p className="footer-tagline">
-              IDEAS QUE HACEN CRECER TU NEGOCIO • RU / EN / ES
+              {t.matrixIntro.tagline} • RU / EN / ES
             </p>
           </div>
 

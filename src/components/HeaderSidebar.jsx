@@ -23,7 +23,6 @@ export function HeaderSidebar({
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
-  const [phoneMenuOpen, setPhoneMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   const handleNavClick = (page, item = null) => {
@@ -191,72 +190,24 @@ export function HeaderSidebar({
             </button>
           </nav>
 
-          {/* Right Actions: WhatsApp Numbers + Contact Pill + Install PWA + Language + Theme Toggle + Drawer */}
+          {/* Right Actions: Single-line WhatsApp Number +58 412 377 6184 + Compact Multicolor Blinking Contact Button + PWA + Language + Theme + Drawer */}
           <div className="header-actions">
-            <div
-              className="header-phones-wrapper"
-              onMouseEnter={() => setPhoneMenuOpen(true)}
-              onMouseLeave={() => setPhoneMenuOpen(false)}
-            >
-              <div className="header-phones-trigger">
-                <a
-                  href={WHATSAPP_NUMBERS[0].url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="header-phone-main"
-                >
-                  <WhatsAppIcon size={18} />
-                  <span>{WHATSAPP_NUMBERS[0].display}</span>
-                </a>
-                <a
-                  href={WHATSAPP_NUMBERS[1].url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="header-phone-sub"
-                >
-                  <WhatsAppIcon size={15} />
-                  <span>{WHATSAPP_NUMBERS[1].display} ⌄</span>
-                </a>
-              </div>
-
-              {phoneMenuOpen && (
-                <div className="phones-dropdown">
-                  <div className="phones-dropdown-label">{t.nav.whatsappLabel}</div>
-                  {WHATSAPP_NUMBERS.map((phone) => (
-                    <a
-                      key={phone.raw}
-                      href={phone.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="phone-dropdown-item"
-                    >
-                      <WhatsAppIcon size={26} />
-                      <div>
-                        <div className="phone-number-strong">{phone.display}</div>
-                        <div className="phone-region">{phone.region[lang]}</div>
-                      </div>
-                    </a>
-                  ))}
-                  <a
-                    href={INSTAGRAM_INFO.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="phone-dropdown-item insta-item"
-                  >
-                    <InstagramIcon size={26} />
-                    <div>
-                      <div className="phone-number-strong">{INSTAGRAM_INFO.handle}</div>
-                      <div className="phone-region">Instagram</div>
-                    </div>
-                  </a>
-                </div>
-              )}
+            <div className="header-phones-wrapper">
+              <a
+                href={WHATSAPP_NUMBERS[0].url}
+                target="_blank"
+                rel="noreferrer"
+                className="header-phone-single"
+              >
+                <WhatsAppIcon size={17} />
+                <span>{WHATSAPP_NUMBERS[0].display}</span>
+              </a>
             </div>
 
-            {/* Pill Button "СВЯЗАТЬСЯ С НАМИ" */}
+            {/* Compact Narrow Pill Button "СВЯЗАТЬСЯ С НАМИ" with Multicolor Blink Animation */}
             <button
               type="button"
-              className="btn-contact-pill"
+              className="btn-contact-pill header-contact-btn blink-multicolor"
               onClick={() => onOpenLeadModal()}
             >
               {t.nav.contactUs}
