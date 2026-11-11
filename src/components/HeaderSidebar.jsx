@@ -19,7 +19,6 @@ export function HeaderSidebar({
   matrixEnabled,
   setMatrixEnabled,
   onReplayIntro,
-  canInstallPwa,
   onInstallPwa
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -192,7 +191,7 @@ export function HeaderSidebar({
             </button>
           </nav>
 
-          {/* Right Actions: WhatsApp Numbers with Icons + Contact Pill + Language + Theme Toggle + Drawer */}
+          {/* Right Actions: WhatsApp Numbers + Contact Pill + Install PWA + Language + Theme Toggle + Drawer */}
           <div className="header-actions">
             <div
               className="header-phones-wrapper"
@@ -261,6 +260,17 @@ export function HeaderSidebar({
               onClick={() => onOpenLeadModal()}
             >
               {t.nav.contactUs}
+            </button>
+
+            {/* Always-Visible Install PWA Button (works on iPhone, Android & PC) */}
+            <button
+              type="button"
+              className="header-pwa-btn"
+              onClick={onInstallPwa}
+              title={t.nav.installPwa}
+            >
+              <span>📲</span>
+              <span className="pwa-btn-text">PWA</span>
             </button>
 
             {/* Language Selector RU / EN / ES */}
@@ -360,6 +370,19 @@ export function HeaderSidebar({
                 ✕
               </button>
             </div>
+
+            {/* Prominent Install App (PWA) Button inside Mobile/Desktop Sidebar */}
+            <button
+              type="button"
+              className="sidebar-pwa-banner-btn"
+              onClick={() => {
+                setDrawerOpen(false);
+                onInstallPwa();
+              }}
+            >
+              <span>📲 {t.nav.installPwa}</span>
+              <span className="pwa-os-tags">iOS • Android</span>
+            </button>
 
             {/* Language & Theme Pills in Sidebar */}
             <div className="sidebar-langs">
@@ -494,15 +517,6 @@ export function HeaderSidebar({
                 >
                   ▶ {t.nav.matrixIntroBtn}
                 </button>
-                {canInstallPwa && (
-                  <button
-                    type="button"
-                    className="util-chip pwa-chip"
-                    onClick={onInstallPwa}
-                  >
-                    ⬇ {t.nav.installPwa}
-                  </button>
-                )}
               </div>
 
               <button

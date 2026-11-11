@@ -8,11 +8,13 @@
       name="description"
       content="VitaNeX Digital Studio — Разработка IT-экосистем, сайтов под ключ, мобильных приложений и PWA для B2B и B2C бизнеса. RU / EN / ES."
     />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="VitaNeX" />
     <link rel="icon" type="image/png" href="./assets/icon-192.png" />
-    <link rel="apple-touch-icon" href="./assets/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="./assets/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="./assets/icon-512.png" />
     <link rel="manifest" href="./manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,6 +23,14 @@
       rel="stylesheet"
     />
     <title>VitaNeX Digital Studio — IT & Digital Решения для Бизнеса</title>
+    <script>
+      window.__deferredPwaPrompt = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__deferredPwaPrompt = e;
+        window.dispatchEvent(new Event('pwa-prompt-ready'));
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -14,6 +14,7 @@ import { MatrixCanvas, MatrixIntroOverlay } from './components/MatrixRain';
 import { HeaderSidebar } from './components/HeaderSidebar';
 import { LeadForm, SuccessPopup } from './components/LeadFormSection';
 import { VitaNexLogo, WhatsAppIcon, InstagramIcon } from './components/BrandIcons';
+import { PwaInstallModal } from './components/PwaInstallModal';
 import './App.css';
 
 export function App() {
@@ -74,23 +75,48 @@ export function App() {
   const [modalService, setModalService] = useState('');
   const [successPayload, setSuccessPayload] = useState(null);
 
-  // PWA Install Prompt
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  // PWA Install Prompt & Interactive Mobile Guide Modal
+  const [deferredPrompt, setDeferredPrompt] = useState(
+    () => (typeof window !== 'undefined' && window.__deferredPwaPrompt) || null
+  );
+  const [pwaGuideOpen, setPwaGuideOpen] = useState(false);
 
   useEffect(() => {
+    const syncPrompt = () => {
+      if (window.__deferredPwaPrompt) {
+        setDeferredPrompt(window.__deferredPwaPrompt);
+      }
+    };
     const handler = (e) => {
       e.preventDefault();
+      window.__deferredPwaPrompt = e;
       setDeferredPrompt(e);
     };
     window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+    window.addEventListener('pwa-prompt-ready', syncPrompt);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener('pwa-prompt-ready', syncPrompt);
+    };
   }, []);
 
-  const handleInstallPwa = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
+  const triggerNativeInstall = async () => {
+    const promptEvent = deferredPrompt || window.__deferredPwaPrompt;
+    if (!promptEvent) return;
+    promptEvent.prompt();
+    await promptEvent.userChoice;
+    window.__deferredPwaPrompt = null;
     setDeferredPrompt(null);
+    setPwaGuideOpen(false);
+  };
+
+  const handleInstallPwa = async () => {
+    const promptEvent = deferredPrompt || window.__deferredPwaPrompt;
+    if (promptEvent) {
+      await triggerNativeInstall();
+    } else {
+      setPwaGuideOpen(true);
+    }
   };
 
   const navigateTo = (page, item = null) => {
@@ -242,6 +268,14 @@ export function App() {
                           Instagram: <strong>{INSTAGRAM_INFO.handle}</strong>
                         </span>
                       </a>
+                      <button
+                        type="button"
+                        className="hero-wa-chip pwa-hero-chip"
+                        onClick={handleInstallPwa}
+                      >
+                        <span>📲</span>
+                        <strong>{t.nav.installPwa}</strong>
+                      </button>
                     </div>
                   </div>
 
@@ -940,12 +974,28 @@ export function App() {
               <InstagramIcon size={20} />
               <span>{INSTAGRAM_INFO.handle}</span>
             </a>
+            <button
+              type="button"
+              className="footer-pwa-install-btn"
+              onClick={handleInstallPwa}
+            >
+              📲 {t.nav.installPwa}
+            </button>
           </div>
         </div>
         <div className="footer-bottom">
           © {new Date().getFullYear()} VitaNeX Digital Studio. {t.sections.footerRights}
         </div>
       </footer>
+
+      {/* Interactive PWA Install Guide Modal for iPhone (iOS) & Android */}
+      <PwaInstallModal
+        isOpen={pwaGuideOpen}
+        onClose={() => setPwaGuideOpen(false)}
+        lang={lang}
+        canDirectInstall={Boolean(deferredPrompt)}
+        onDirectInstall={triggerNativeInstall}
+      />
 
       {/* Small Floating Circle Button "↗ ОБСУДИТЬ ПРОЕКТ" — appears ONLY when scrolling down */}
       <button
