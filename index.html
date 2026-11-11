@@ -2,6 +2,16 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      window.__introStartTime = Date.now();
+      window.__skipIntro = false;
+      window.__deferredPwaPrompt = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__deferredPwaPrompt = e;
+        window.dispatchEvent(new Event('pwa-prompt-ready'));
+      });
+    </script>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
@@ -32,20 +42,50 @@
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@600;700&family=Unbounded:wght@700;800;900&display=swap"
       />
     </noscript>
-    <style>html,body{color:#f8fafc;background-color:#070812;margin:0;padding:0}</style>
+    <style>html,body{color:#f8fafc;background-color:#070812;margin:0;padding:0;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif}.boot-intro-overlay{z-index:9999;background:radial-gradient(circle,#0c0e24 0%,#05060f 100%);justify-content:center;align-items:center;padding:24px;display:flex;position:fixed;inset:0}.boot-intro-card{z-index:2;text-align:center;background:#080a18e6;border:1px solid #00f0ff73;border-radius:28px;width:100%;max-width:520px;padding:36px 28px;position:relative;box-shadow:0 0 45px #00f0ff40,0 0 80px #b829ff40}.boot-spin{transform-origin:100px 100px;animation:9s linear infinite bootRingSpin}@keyframes bootRingSpin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.boot-code{letter-spacing:.14em;color:#00f0ff;margin:16px 0 10px;font-family:JetBrains Mono,monospace;font-size:11px}.boot-title{color:#fff;margin:0 0 8px;font-family:Unbounded,Inter,sans-serif;font-size:22px;font-weight:800}.boot-slogan{color:#ff244c;text-shadow:0 0 16px #ff244c8c;margin:6px 0 22px;font-family:Cormorant Garamond,Georgia,serif;font-size:24px;font-style:italic;font-weight:700}.boot-progress{background:#ffffff1a;border-radius:999px;width:100%;height:6px;margin-bottom:22px;overflow:hidden}.boot-progress-fill{transform-origin:0;background:linear-gradient(90deg,#00f0ff,#b829ff);width:100%;height:100%;animation:1.8s ease-out forwards bootFill}@keyframes bootFill{0%{transform:scaleX(.08)}to{transform:scaleX(1)}}.boot-skip-btn{color:#05060f;letter-spacing:.06em;cursor:pointer;background:linear-gradient(90deg,#00f0ff,#b829ff);border:none;border-radius:999px;padding:12px 28px;font-size:13px;font-weight:800}</style>
     <title>VitaNeX Digital Studio — IT & Digital Решения для Бизнеса</title>
-    <script>
-      window.__deferredPwaPrompt = null;
-      window.addEventListener('beforeinstallprompt', function (e) {
-        e.preventDefault();
-        window.__deferredPwaPrompt = e;
-        window.dispatchEvent(new Event('pwa-prompt-ready'));
-      });
-    </script>
-    <script type="module" crossorigin src="./assets/index-B_BRRbyE.js"></script>
+    <script type="module" crossorigin src="./assets/index-BSUSuf7r.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-Dq9oGBOw.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Instant First-Byte Intro Shell: renders in <0.1s while JS bundle loads in parallel -->
+      <div class="boot-intro-overlay" onclick="window.__skipIntro=true">
+        <div class="boot-intro-card" onclick="event.stopPropagation()">
+          <div style="display:flex;justify-content:center">
+            <svg width="136" height="136" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 12px rgba(0,240,255,0.38))">
+              <defs>
+                <linearGradient id="b-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00f0ff" />
+                  <stop offset="50%" stop-color="#3b82f6" />
+                  <stop offset="100%" stop-color="#d946ef" />
+                </linearGradient>
+                <linearGradient id="b-vx" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#00f0ff" />
+                  <stop offset="48%" stop-color="#38bdf8" />
+                  <stop offset="52%" stop-color="#c084fc" />
+                  <stop offset="100%" stop-color="#f43f5e" />
+                </linearGradient>
+              </defs>
+              <circle cx="100" cy="100" r="95" fill="#070814" stroke="url(#b-grad)" stroke-width="3.5" />
+              <g class="boot-spin">
+                <circle cx="100" cy="100" r="86" stroke="url(#b-grad)" stroke-width="3" stroke-dasharray="44 18 22 18" stroke-linecap="round" />
+                <circle cx="100" cy="14" r="4.5" fill="#00f0ff" />
+                <circle cx="100" cy="186" r="4.5" fill="#d946ef" />
+              </g>
+              <path d="M44 50 L74 114 L102 50" stroke="url(#b-vx)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M98 50 L150 114 M150 50 L98 114" stroke="url(#b-vx)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+              <text x="100" y="143" text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-weight="900" font-size="23">Vita<tspan fill="#00f0ff">Ne</tspan><tspan fill="#d946ef">X</tspan></text>
+              <text x="100" y="162" text-anchor="middle" fill="#00f0ff" font-family="JetBrains Mono, monospace" font-weight="700" font-size="10.2" letter-spacing="2.4">DIGITAL STUDIO</text>
+            </svg>
+          </div>
+          <div class="boot-code">INITIALIZING CYBER-CORE // VITANEX DIGITAL STUDIO</div>
+          <h2 class="boot-title"><span style="color:#00f0ff">Vita</span><span style="color:#b829ff">NeX</span> DIGITAL STUDIO</h2>
+          <p class="boot-slogan">ИДЕИ, Меняющие Реальность</p>
+          <div class="boot-progress"><div class="boot-progress-fill"></div></div>
+          <button type="button" class="boot-skip-btn" onclick="window.__skipIntro=true;var el=this.closest('.boot-intro-overlay');if(el)el.style.display='none';">ПЕРЕЙТИ НА САЙТ ↗</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

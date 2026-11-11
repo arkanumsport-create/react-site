@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vitanex-pwa-v7';
+const CACHE_NAME = 'vitanex-pwa-v8';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -7,12 +7,10 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
-    })
-  );
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS)).catch(() => {})
+  );
 });
 
 self.addEventListener('activate', (event) => {
@@ -23,44 +21,44 @@ self.addEventListener('activate', (event) => {
           .filter((key) => key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       )
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
 
-  // Never intercept video streams or Range requests (prevents 5-second mobile video buffering lock)
+  // Never intercept video streams, Range requests, or sw.js itself
   if (
     event.request.headers.get('range') ||
     event.request.destination === 'video' ||
-    /\.(mp4|mov|webm)(\?|$)/i.test(url.pathname)
+    /\.(mp4|mov|webm|sw\.js)(\?|$)/i.test(url.pathname)
   ) {
     return;
   }
 
-  // Instant Stale-While-Revalidate: return cached app shell immediately, update cache in background
-  event.respondWith(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.match(event.request).then((cachedResponse) => {
-        const networkFetch = fetch(event.request)
-          .then((networkResponse) => {
-            if (
-              networkResponse &&
-              networkResponse.status === 200 &&
-              networkResponse.type === 'basic'
-            ) {
-              cache.put(event.request, networkResponse.clone());
-            }
-            return networkResponse;
-          })
-          .catch(() => cachedResponse);
+  // For HTML navigation: do NOT block iOS WebKit with CacheStorage lookup;
+  // let native browser HTTP stack stream index.html immediately, fallback to cache only if offline.
+  if (event.request.mode === 'navigate') {
+    return;
+  }
 
-        return cachedResponse || networkFetch;
-      });
-    })
-  );
+  // Pure Cache-First for immutable hashed JS/CSS/icons (zero redundant background fetches)
+  if (/\/assets\/.*\.(js|css|png|jpg|svg|webp)$/i.test(url.pathname)) {
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((response) => {
+          if (response && response.status === 200 && response.type === 'basic') {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        });
+      })
+    );
+  }
 });
