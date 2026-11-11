@@ -5,9 +5,14 @@ import App from './App.jsx';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {
-      // Service worker registration optional in local dev
-    });
+    navigator.serviceWorker
+      .register('./sw.js', { updateViaCache: 'none' })
+      .then((reg) => {
+        reg.update().catch(() => {});
+      })
+      .catch(() => {
+        // Service worker registration optional in local dev
+      });
   });
 }
 

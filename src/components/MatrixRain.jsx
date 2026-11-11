@@ -111,9 +111,12 @@ export function MatrixCanvas({ opacity = 0.38, lightMode = false, speed = 1 }) {
 
 export function MatrixIntroOverlay({ onComplete, t, lang, setLang }) {
   useEffect(() => {
+    const start = (typeof window !== 'undefined' && window.__introStartTime) || Date.now();
+    const elapsed = Date.now() - start;
+    const remaining = Math.max(250, 1800 - elapsed);
     const timer = setTimeout(() => {
       onComplete();
-    }, 2200);
+    }, remaining);
     return () => clearTimeout(timer);
   }, [onComplete]);
 

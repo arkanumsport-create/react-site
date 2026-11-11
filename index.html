@@ -2,6 +2,16 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      window.__introStartTime = Date.now();
+      window.__skipIntro = false;
+      window.__deferredPwaPrompt = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__deferredPwaPrompt = e;
+        window.dispatchEvent(new Event('pwa-prompt-ready'));
+      });
+    </script>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
@@ -38,20 +48,134 @@
         color: #f8fafc;
         margin: 0;
         padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      .boot-intro-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: radial-gradient(circle at center, #0c0e24 0%, #05060f 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .boot-intro-card {
+        position: relative;
+        z-index: 2;
+        background: rgba(8, 10, 24, 0.9);
+        border: 1px solid rgba(0, 240, 255, 0.45);
+        box-shadow: 0 0 45px rgba(0, 240, 255, 0.25), 0 0 80px rgba(184, 41, 255, 0.25);
+        border-radius: 28px;
+        padding: 36px 28px;
+        max-width: 520px;
+        width: 100%;
+        text-align: center;
+      }
+      .boot-spin {
+        transform-origin: 100px 100px;
+        animation: bootRingSpin 9s linear infinite;
+      }
+      @keyframes bootRingSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .boot-code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: #00f0ff;
+        margin: 16px 0 10px;
+      }
+      .boot-title {
+        font-family: 'Unbounded', 'Inter', sans-serif;
+        font-size: 22px;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0 0 8px;
+      }
+      .boot-slogan {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-style: italic;
+        font-weight: 700;
+        font-size: 24px;
+        color: #ff244c;
+        text-shadow: 0 0 16px rgba(255, 36, 76, 0.55);
+        margin: 6px 0 22px;
+      }
+      .boot-progress {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 22px;
+      }
+      .boot-progress-fill {
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(90deg, #00f0ff, #b829ff);
+        transform-origin: left;
+        animation: bootFill 1.8s ease-out forwards;
+      }
+      @keyframes bootFill {
+        from { transform: scaleX(0.08); }
+        to { transform: scaleX(1); }
+      }
+      .boot-skip-btn {
+        background: linear-gradient(90deg, #00f0ff, #b829ff);
+        color: #05060f;
+        border: none;
+        border-radius: 999px;
+        padding: 12px 28px;
+        font-weight: 800;
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        cursor: pointer;
       }
     </style>
     <title>VitaNeX Digital Studio — IT & Digital Решения для Бизнеса</title>
-    <script>
-      window.__deferredPwaPrompt = null;
-      window.addEventListener('beforeinstallprompt', function (e) {
-        e.preventDefault();
-        window.__deferredPwaPrompt = e;
-        window.dispatchEvent(new Event('pwa-prompt-ready'));
-      });
-    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Instant First-Byte Intro Shell: renders in <0.1s while JS bundle loads in parallel -->
+      <div class="boot-intro-overlay" onclick="window.__skipIntro=true">
+        <div class="boot-intro-card" onclick="event.stopPropagation()">
+          <div style="display:flex;justify-content:center">
+            <svg width="136" height="136" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 12px rgba(0,240,255,0.38))">
+              <defs>
+                <linearGradient id="b-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00f0ff" />
+                  <stop offset="50%" stop-color="#3b82f6" />
+                  <stop offset="100%" stop-color="#d946ef" />
+                </linearGradient>
+                <linearGradient id="b-vx" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#00f0ff" />
+                  <stop offset="48%" stop-color="#38bdf8" />
+                  <stop offset="52%" stop-color="#c084fc" />
+                  <stop offset="100%" stop-color="#f43f5e" />
+                </linearGradient>
+              </defs>
+              <circle cx="100" cy="100" r="95" fill="#070814" stroke="url(#b-grad)" stroke-width="3.5" />
+              <g class="boot-spin">
+                <circle cx="100" cy="100" r="86" stroke="url(#b-grad)" stroke-width="3" stroke-dasharray="44 18 22 18" stroke-linecap="round" />
+                <circle cx="100" cy="14" r="4.5" fill="#00f0ff" />
+                <circle cx="100" cy="186" r="4.5" fill="#d946ef" />
+              </g>
+              <path d="M44 50 L74 114 L102 50" stroke="url(#b-vx)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M98 50 L150 114 M150 50 L98 114" stroke="url(#b-vx)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+              <text x="100" y="143" text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-weight="900" font-size="23">Vita<tspan fill="#00f0ff">Ne</tspan><tspan fill="#d946ef">X</tspan></text>
+              <text x="100" y="162" text-anchor="middle" fill="#00f0ff" font-family="JetBrains Mono, monospace" font-weight="700" font-size="10.2" letter-spacing="2.4">DIGITAL STUDIO</text>
+            </svg>
+          </div>
+          <div class="boot-code">INITIALIZING CYBER-CORE // VITANEX DIGITAL STUDIO</div>
+          <h2 class="boot-title"><span style="color:#00f0ff">Vita</span><span style="color:#b829ff">NeX</span> DIGITAL STUDIO</h2>
+          <p class="boot-slogan">ИДЕИ, Меняющие Реальность</p>
+          <div class="boot-progress"><div class="boot-progress-fill"></div></div>
+          <button type="button" class="boot-skip-btn" onclick="window.__skipIntro=true;var el=this.closest('.boot-intro-overlay');if(el)el.style.display='none';">ПЕРЕЙТИ НА САЙТ ↗</button>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

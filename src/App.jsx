@@ -44,7 +44,14 @@ export function App() {
   }, [themeMode]);
 
   // Matrix Digital Rain Intro & Background state
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => {
+    if (typeof window !== 'undefined') {
+      if (window.__skipIntro) return false;
+      const elapsed = Date.now() - (window.__introStartTime || Date.now());
+      if (elapsed >= 1750) return false;
+    }
+    return true;
+  });
   const [matrixEnabled, setMatrixEnabled] = useState(true);
 
   // Navigation state
@@ -172,7 +179,10 @@ export function App() {
         setThemeMode={setThemeMode}
         matrixEnabled={matrixEnabled}
         setMatrixEnabled={setMatrixEnabled}
-        onReplayIntro={() => setShowIntro(true)}
+        onReplayIntro={() => {
+          window.__introStartTime = Date.now();
+          setShowIntro(true);
+        }}
         canInstallPwa={Boolean(deferredPrompt)}
         onInstallPwa={handleInstallPwa}
       />
