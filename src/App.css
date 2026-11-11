@@ -2927,11 +2927,12 @@
 
 
 /* ==========================================================================
-   BRAND SLOGAN IN VIBRANT RED WITH EXPRESSIVE TYPOGRAPHY (RU / EN / ES)
+   BRAND SLOGAN TYPOGRAPHY (RU / EN / ES)
+   - Matrix Intro keeps its signature styling
+   - Top (Hero) & Bottom (Footer) use uniform uppercase, extra-bold font,
+     vibrant purple fill (#b829ff) and turquoise outline (#00f0ff)
    ========================================================================== */
-.matrix-intro-tagline,
-.hero-red-slogan,
-.footer-tagline {
+.matrix-intro-tagline {
   font-family: 'Cormorant Garamond', 'Unbounded', Georgia, serif !important;
   font-style: italic;
   font-weight: 700 !important;
@@ -2941,27 +2942,51 @@
     0 0 28px rgba(255, 20, 60, 0.35);
   letter-spacing: 0.06em !important;
   opacity: 1 !important;
-}
-
-.matrix-intro-tagline {
   font-size: 22px !important;
   margin-bottom: 22px !important;
 }
 
+.hero-red-slogan,
+.footer-tagline {
+  font-family: 'Unbounded', 'Inter', sans-serif !important;
+  font-style: normal !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  color: #b829ff !important;
+  -webkit-text-stroke: 2.2px #00f0ff;
+  paint-order: stroke fill;
+  text-shadow:
+    -1px -1px 0 #00f0ff,
+     1px -1px 0 #00f0ff,
+    -1px  1px 0 #00f0ff,
+     1px  1px 0 #00f0ff,
+     0 0 14px rgba(0, 240, 255, 0.6),
+     0 0 26px rgba(184, 41, 255, 0.45) !important;
+  letter-spacing: 0.07em !important;
+  line-height: 1.35 !important;
+  opacity: 1 !important;
+}
+
 .hero-red-slogan {
-  font-size: clamp(20px, 2.4vw, 30px);
-  margin-top: -14px;
+  font-size: clamp(18px, 2.3vw, 28px);
+  margin-top: -10px;
   margin-bottom: 26px;
 }
 
 .footer-tagline {
-  font-size: 18px !important;
-  margin-top: 10px !important;
+  font-size: clamp(14px, 1.6vw, 18px) !important;
+  margin-top: 12px !important;
 }
 
-.theme-light .matrix-intro-tagline,
 .theme-light .hero-red-slogan,
 .theme-light .footer-tagline {
-  color: #dc2626 !important;
-  text-shadow: 0 2px 10px rgba(220, 38, 38, 0.22);
+  color: #9333ea !important;
+  -webkit-text-stroke: 2.2px #00d2ff;
+  paint-order: stroke fill;
+  text-shadow:
+    -1px -1px 0 #00d2ff,
+     1px -1px 0 #00d2ff,
+    -1px  1px 0 #00d2ff,
+     1px  1px 0 #00d2ff,
+     0 2px 12px rgba(0, 210, 255, 0.35) !important;
 }
