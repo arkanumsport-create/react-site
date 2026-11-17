@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /sw.js
+
+User-agent: Googlebot
+Allow: /
+Disallow: /sw.js
+
+User-agent: Yandex
+Allow: /
+Disallow: /sw.js
+
+Host: https://vitanexds.online
+Sitemap: https://vitanexds.online/sitemap.xml

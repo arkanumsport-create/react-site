@@ -18,8 +18,14 @@ import { PwaInstallModal } from './components/PwaInstallModal';
 import './App.css';
 
 export function App() {
-  // Language persisted in localStorage (RU / EN / ES)
+  // Language persisted in localStorage (RU / EN / ES) or read from ?lang= URL query for SEO
   const [lang, setLangState] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const urlLang = new URLSearchParams(window.location.search).get('lang')?.toLowerCase();
+      if (urlLang && TRANSLATIONS[urlLang]) {
+        return urlLang;
+      }
+    }
     const saved = localStorage.getItem('vitanex_lang');
     return saved && TRANSLATIONS[saved] ? saved : 'ru';
   });
@@ -47,6 +53,8 @@ export function App() {
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window !== 'undefined') {
       if (window.__skipIntro) return false;
+      const ua = navigator.userAgent || '';
+      if (/bot|googlebot|yandex|crawler|spider|crawling/i.test(ua)) return false;
       const elapsed = Date.now() - (window.__introStartTime || Date.now());
       if (elapsed >= 1750) return false;
     }
@@ -54,8 +62,17 @@ export function App() {
   });
   const [matrixEnabled, setMatrixEnabled] = useState(true);
 
-  // Navigation state
-  const [activePage, setActivePage] = useState('home');
+  // Navigation state (supports ?page= query param from sitemap.xml for Google/Yandex indexing)
+  const [activePage, setActivePage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const urlPage = new URLSearchParams(window.location.search).get('page')?.toLowerCase();
+      const validPages = ['home', 'services', 'portfolio', 'expertise', 'about', 'blog', 'contacts'];
+      if (urlPage && validPages.includes(urlPage)) {
+        return urlPage;
+      }
+    }
+    return 'home';
+  });
   const [selectedService, setSelectedService] = useState(SERVICES_DATA[0]);
   const [selectedCase, setSelectedCase] = useState(PORTFOLIO_CASES[0]);
   const [selectedPost, setSelectedPost] = useState(null);

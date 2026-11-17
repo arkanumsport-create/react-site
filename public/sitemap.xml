@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
+  <!-- Главная страница (RU / EN / ES) -->
+  <url>
+    <loc>https://vitanexds.online/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://vitanexds.online/?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://vitanexds.online/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://vitanexds.online/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vitanexds.online/" />
+  </url>
+
+  <!-- Услуги / Services / Servicios -->
+  <url>
+    <loc>https://vitanexds.online/?page=services</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Портфолио и Кейсы / Portfolio & Cases -->
+  <url>
+    <loc>https://vitanexds.online/?page=portfolio</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Отраслевая экспертиза / Industry Expertise -->
+  <url>
+    <loc>https://vitanexds.online/?page=expertise</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- О компании / About Us -->
+  <url>
+    <loc>https://vitanexds.online/?page=about</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Блог / Blog -->
+  <url>
+    <loc>https://vitanexds.online/?page=blog</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Контакты / Contacts -->
+  <url>
+    <loc>https://vitanexds.online/?page=contacts</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Языковые версии (EN / ES) -->
+  <url>
+    <loc>https://vitanexds.online/?lang=en</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://vitanexds.online/?lang=es</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>
