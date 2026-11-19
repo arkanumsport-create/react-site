@@ -61,6 +61,24 @@ export function App() {
     return true;
   });
   const [matrixEnabled, setMatrixEnabled] = useState(true);
+  const [matrixAutoStopped, setMatrixAutoStopped] = useState(false);
+
+  // Keep Matrix rain active for 3 seconds after entering the site, then auto-disable it
+  // (can still be toggled ON/OFF manually from the sidebar menu at any time)
+  useEffect(() => {
+    if (!showIntro && !matrixAutoStopped) {
+      const timer = setTimeout(() => {
+        setMatrixEnabled(false);
+        setMatrixAutoStopped(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showIntro, matrixAutoStopped]);
+
+  const handleSetMatrixEnabled = (val) => {
+    setMatrixAutoStopped(true);
+    setMatrixEnabled(val);
+  };
 
   // Navigation state (supports ?page= query param from sitemap.xml for Google/Yandex indexing)
   const [activePage, setActivePage] = useState(() => {
@@ -195,7 +213,7 @@ export function App() {
         themeMode={themeMode}
         setThemeMode={setThemeMode}
         matrixEnabled={matrixEnabled}
-        setMatrixEnabled={setMatrixEnabled}
+        setMatrixEnabled={handleSetMatrixEnabled}
         onReplayIntro={() => {
           window.__introStartTime = Date.now();
           setShowIntro(true);
