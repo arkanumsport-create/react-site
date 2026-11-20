@@ -2990,3 +2990,139 @@
      1px  1px 0 #00d2ff,
      0 2px 12px rgba(0, 210, 255, 0.35) !important;
 }
+
+/* ==========================================================================
+   OFFICE LOCATION CARD & INTERACTIVE GOOGLE MAP (MARACAY, VENEZUELA)
+   ========================================================================== */
+.office-loc-card {
+  border-color: rgba(0, 240, 255, 0.35) !important;
+}
+
+.office-pin-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(184, 41, 255, 0.25));
+  border: 1px solid rgba(0, 240, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.office-address-semantic {
+  font-style: normal;
+}
+
+.office-badge {
+  color: #00f0ff !important;
+}
+
+.office-city-line {
+  font-size: 16px !important;
+}
+
+.office-map-wrapper {
+  margin-top: 38px;
+  background: rgba(14, 16, 34, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  box-shadow:
+    0 0 35px rgba(0, 240, 255, 0.14),
+    0 0 60px rgba(184, 41, 255, 0.12);
+  border-radius: 24px;
+  padding: 28px;
+}
+
+.theme-light .office-map-wrapper {
+  background: #ffffff;
+  border-color: rgba(55, 41, 255, 0.22);
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.08);
+}
+
+.office-map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.office-map-title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 6px 0 6px;
+}
+
+.theme-light .office-map-title {
+  color: #0f172a;
+}
+
+.office-map-address {
+  font-size: 14.5px;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.theme-light .office-map-address {
+  color: #475569;
+}
+
+.office-map-open-btn {
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.office-map-frame-box {
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  background: #070812;
+}
+
+.office-map-iframe {
+  display: block;
+  width: 100%;
+  height: 380px;
+}
+
+.footer-office-address {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: #cbd5e1;
+  transition: color 0.2s ease;
+}
+
+.footer-office-address:hover {
+  color: #00f0ff;
+}
+
+.theme-light .footer-office-address {
+  color: #334155;
+}
+
+@media (max-width: 768px) {
+  .office-map-wrapper {
+    padding: 18px 14px;
+    margin-top: 26px;
+  }
+
+  .office-map-iframe {
+    height: 300px;
+  }
+
+  .office-map-open-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

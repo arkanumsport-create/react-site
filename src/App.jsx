@@ -3,6 +3,7 @@ import {
   TRANSLATIONS,
   WHATSAPP_NUMBERS,
   INSTAGRAM_INFO,
+  OFFICE_LOCATION,
   SERVICES_DATA,
   PORTFOLIO_CASES,
   EXPERTISE_INDUSTRIES,
@@ -602,6 +603,33 @@ export function App() {
                           <div className="wa-card-region">{INSTAGRAM_INFO.label[lang]}</div>
                         </div>
                       </a>
+
+                      {/* Office Address Card (Calicanto, near Café Manhattan, Maracay, Venezuela) */}
+                      <a
+                        href={OFFICE_LOCATION.mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="lead-wa-card office-loc-card"
+                      >
+                        <div className="office-pin-icon" aria-hidden="true">📍</div>
+                        <address
+                          className="office-address-semantic"
+                          itemScope
+                          itemType="https://schema.org/PostalAddress"
+                        >
+                          <div className="wa-card-badge office-badge">
+                            {OFFICE_LOCATION.tag[lang]}
+                          </div>
+                          <div className="wa-card-number office-city-line">
+                            <span itemProp="addressLocality">Maracay</span>,{' '}
+                            <span itemProp="addressRegion">Aragua</span>,{' '}
+                            <span itemProp="addressCountry">Venezuela</span>
+                          </div>
+                          <div className="wa-card-region" itemProp="streetAddress">
+                            {OFFICE_LOCATION.addressText[lang]}
+                          </div>
+                        </address>
+                      </a>
                     </div>
                   </div>
 
@@ -610,6 +638,38 @@ export function App() {
                       t={t}
                       lang={lang}
                       onSuccess={(payload) => setSuccessPayload(payload)}
+                    />
+                  </div>
+                </div>
+
+                {/* Interactive Office Location Map (English / Spanish) — Urb. Calicanto near Café Manhattan, Maracay */}
+                <div className="office-map-wrapper">
+                  <div className="office-map-header">
+                    <div>
+                      <span className="section-tag">{OFFICE_LOCATION.tag[lang]}</span>
+                      <h3 className="office-map-title">{OFFICE_LOCATION.title[lang]}</h3>
+                      <p className="office-map-address">{OFFICE_LOCATION.addressText[lang]}</p>
+                    </div>
+                    <a
+                      href={OFFICE_LOCATION.mapsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-outline-cyber office-map-open-btn"
+                    >
+                      📍 {OFFICE_LOCATION.openMapsBtn[lang]}
+                    </a>
+                  </div>
+                  <div className="office-map-frame-box">
+                    <iframe
+                      title="VitaNeX Digital Studio Office — Urb. Calicanto, Maracay, Venezuela"
+                      src={OFFICE_LOCATION.getEmbedUrl(lang === 'en' ? 'en' : 'es')}
+                      width="100%"
+                      height="380"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="office-map-iframe"
                     />
                   </div>
                 </div>
@@ -957,6 +1017,33 @@ export function App() {
                         <div className="wa-card-region">{INSTAGRAM_INFO.label[lang]}</div>
                       </div>
                     </a>
+
+                    {/* Office Address Card in Contacts Tab */}
+                    <a
+                      href={OFFICE_LOCATION.mapsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="lead-wa-card office-loc-card"
+                    >
+                      <div className="office-pin-icon" aria-hidden="true">📍</div>
+                      <address
+                        className="office-address-semantic"
+                        itemScope
+                        itemType="https://schema.org/PostalAddress"
+                      >
+                        <div className="wa-card-badge office-badge">
+                          {OFFICE_LOCATION.tag[lang]}
+                        </div>
+                        <div className="wa-card-number office-city-line">
+                          <span itemProp="addressLocality">Maracay</span>,{' '}
+                          <span itemProp="addressRegion">Aragua</span>,{' '}
+                          <span itemProp="addressCountry">Venezuela</span>
+                        </div>
+                        <div className="wa-card-region" itemProp="streetAddress">
+                          {OFFICE_LOCATION.addressText[lang]}
+                        </div>
+                      </address>
+                    </a>
                   </div>
                 </div>
 
@@ -965,6 +1052,38 @@ export function App() {
                     t={t}
                     lang={lang}
                     onSuccess={(payload) => setSuccessPayload(payload)}
+                  />
+                </div>
+              </div>
+
+              {/* Interactive Office Location Map (English / Spanish) — Urb. Calicanto near Café Manhattan, Maracay */}
+              <div className="office-map-wrapper">
+                <div className="office-map-header">
+                  <div>
+                    <span className="section-tag">{OFFICE_LOCATION.tag[lang]}</span>
+                    <h3 className="office-map-title">{OFFICE_LOCATION.title[lang]}</h3>
+                    <p className="office-map-address">{OFFICE_LOCATION.addressText[lang]}</p>
+                  </div>
+                  <a
+                    href={OFFICE_LOCATION.mapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-outline-cyber office-map-open-btn"
+                  >
+                    📍 {OFFICE_LOCATION.openMapsBtn[lang]}
+                  </a>
+                </div>
+                <div className="office-map-frame-box">
+                  <iframe
+                    title="VitaNeX Digital Studio Office — Urb. Calicanto, Maracay, Venezuela"
+                    src={OFFICE_LOCATION.getEmbedUrl(lang === 'en' ? 'en' : 'es')}
+                    width="100%"
+                    height="380"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="office-map-iframe"
                   />
                 </div>
               </div>
@@ -993,6 +1112,14 @@ export function App() {
             <p className="footer-tagline">
               {t.matrixIntro.tagline} • RU / EN / ES
             </p>
+            <a
+              href={OFFICE_LOCATION.mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="footer-office-address"
+            >
+              📍 {OFFICE_LOCATION.shortBadge[lang]}
+            </a>
           </div>
 
           <div className="footer-links-col">

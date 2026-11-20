@@ -31,6 +31,47 @@ export const INSTAGRAM_INFO = {
   }
 };
 
+export const OFFICE_LOCATION = {
+  lat: 10.2556,
+  lng: -67.6001,
+  postalCode: '2101',
+  city: 'Maracay',
+  state: 'Aragua',
+  country: 'Venezuela',
+  countryCode: 'VE',
+  street: 'Urb. Calicanto, Calle López Aveledo (cerca de Café Manhattan)',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=10.2556,-67.6001',
+  getEmbedUrl: (mapLang = 'es') => {
+    const hl = mapLang === 'en' ? 'en' : 'es';
+    return `https://maps.google.com/maps?q=10.2556,-67.6001+(VitaNeX+Digital+Studio+-+Urb.+Calicanto,+Maracay)&hl=${hl}&z=16&output=embed`;
+  },
+  tag: {
+    ru: '// ОФИС В МАРАКАЕ (VENEZUELA)',
+    en: '// OFFICE IN MARACAY (VENEZUELA)',
+    es: '// OFICINA EN MARACAY (VENEZUELA)'
+  },
+  title: {
+    ru: 'Офис VitaNeX Digital Studio — Maracay, Aragua',
+    en: 'VitaNeX Digital Studio Office — Maracay, Aragua',
+    es: 'Oficina VitaNeX Digital Studio — Maracay, Aragua'
+  },
+  addressText: {
+    ru: 'Urb. Calicanto, Calle López Aveledo (рядом с Café Manhattan), Maracay 2101, Aragua, Venezuela',
+    en: 'Urb. Calicanto, Calle López Aveledo (near Café Manhattan), Maracay 2101, Aragua, Venezuela',
+    es: 'Urb. Calicanto, Calle López Aveledo (cerca de Café Manhattan), Maracay 2101, Estado Aragua, Venezuela'
+  },
+  shortBadge: {
+    ru: 'Urb. Calicanto (рядом с Café Manhattan), Maracay, Venezuela',
+    en: 'Urb. Calicanto (near Café Manhattan), Maracay, Venezuela',
+    es: 'Urb. Calicanto (cerca de Café Manhattan), Maracay, Venezuela'
+  },
+  openMapsBtn: {
+    ru: 'Открыть точку в Google Maps ↗',
+    en: 'Open Location in Google Maps ↗',
+    es: 'Abrir ubicación en Google Maps ↗'
+  }
+};
+
 export const TRANSLATIONS = {
   ru: {
     meta: {
