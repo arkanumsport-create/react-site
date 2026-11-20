@@ -43,7 +43,7 @@ export const OFFICE_LOCATION = {
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=10.2556,-67.6001',
   getEmbedUrl: (mapLang = 'es') => {
     const hl = mapLang === 'en' ? 'en' : 'es';
-    return `https://maps.google.com/maps?q=10.2556,-67.6001+(VitaNeX+Digital+Studio+-+Urb.+Calicanto,+Maracay)&hl=${hl}&z=16&output=embed`;
+    return `https://maps.google.com/maps?q=10.2556,-67.6001&hl=${hl}&z=16&output=embed`;
   },
   tag: {
     ru: '// ОФИС В МАРАКАЕ (VENEZUELA)',
